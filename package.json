@@ -16,12 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/solka2019/Employee-Tracker.git"
+    "url": "git+https://github.com/fatimaromagnoli/employee-managementhw.git"
   },
-  "author": "Marissol Karczeski",
+  "author": "Fatima Romagnoli",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/solka2019/Employee-Tracker/issues"
+    "url": "https://github.com/fatimaromagnoli/employee-managementhw/issues"
   },
-  "homepage": "https://github.com/solka2019/Employee-Tracker#readme"
+  "homepage": "https://github.com/fatimaromagnoli/employee-managementhw#readme"
 }
