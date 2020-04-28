@@ -1,0 +1,27 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "Homework 12",
+  "main": "connectSql.js",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^7.1.0",
+    "linebyline": "^1.3.0",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solka2019/Employee-Tracker.git"
+  },
+  "author": "Marissol Karczeski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solka2019/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/solka2019/Employee-Tracker#readme"
+}
