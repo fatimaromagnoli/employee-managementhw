@@ -6,18 +6,15 @@ let managersArray;
 let employeeArray;
 let dArray;
 
-// Connecting with Server
 const connectMySql = mysql.createConnection({
     host: "localhost",
     port: 3306,
-    // this is mysql - port, it will always be the same #
-    // Firewall - block the incoming request to my computer - security 
+    
     user: "root",
     password: "password"
 });
 
-// connectMySql.connect();
-// Just connect with the server, so you can send commands later!
+
 async function connection()
 {
     connectMySql.connect(function (err) {
@@ -36,17 +33,9 @@ async function app()
 
 app();
 
-// Functions to perform specific SQL queries that I'll need to use. Suggestion is to have a 
-// constructor function or a class to organize these queries- Example below - constructor
-// function Person(first, last, age, eyecolor) {
-//   this.firstName = first;
-//   this.lastName = last;
-//   this.age = age;
-//   this.eyeColor = eyecolor;
-//   this.name = function() {return this.firstName + " " + this.lastName;};
-// }
+
 function start() {
-    // Initalize- - this is how we use inquirer: .prompt... .then... (page inquirer)
+
     inquirer
         .prompt([
             {
@@ -73,7 +62,7 @@ function start() {
             if (chosenTask === "View All Employees") {
                 viewEmployees();
             } else if (chosenTask === "Initialize Server") {
-                // Create the tables in the mysql and set initial values
+                
                 initializeServer();
             } else if (chosenTask === "View All Employees By Department") {
                 viewEmpByDept();
@@ -101,20 +90,16 @@ function initializeServer() {
   
 
     const runSqlFile = function (fileName) {
-        // create the obj (readline) to be able to use the library linebyline. 
+        
         const rl = readline(fileName);
-        // I am using the library to open the file and get an object to represent that file inside de program (rl)
-        let tempBuffer =""; // use this as a buffer to store each line until we have an line ending, then send to mysql
+        
+        let tempBuffer =""; 
         rl.on("line", function (line, lineCount, byteCount) {
-                // do something with the line of text
+                
                 if (byteCount == 0) {
                     return;
                 }
-                tempBuffer = tempBuffer + line; // adds to the temp buffer the current line of text from the file
-                //console.log(tempBuffer);
-                // mysql needs to get a query that ends with ";" (in the file), so we need to 
-                // look for that at each line we read from the text, and only send the buffer
-                // to mysql when we have found it.
+                tempBuffer = tempBuffer + line; 
                 if (line.indexOf(";") > -1) {
                     connectMySql.query(tempBuffer, function (err, sets, fields) {
                         if (err) console.log(err);
@@ -123,7 +108,7 @@ function initializeServer() {
                 }
             })
             .on("error", function (e) {
-                // something went wrong
+                
                 console.log(e);
             });
     };
@@ -133,7 +118,7 @@ function initializeServer() {
     start();
 }
 
-//Displays all employees, If you want to return all users, no matter if they have a favorite product or not, use the LEFT JOIN statement:
+
 function viewEmployees() {
     const queryString = `SELECT employee_table.id, employee_table.first_name, employee_table.last_name, role_table.title, department_table.dept_name AS department, role_table.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee_db.employee_table LEFT JOIN employee_db.role_table ON employee_table.role_id = role_table.id LEFT JOIN employee_db.department_table on role_table.department_id = department_table.id LEFT JOIN employee_db.employee_table manager ON manager.id = employee_table.manager_id ORDER BY employee_table.id;`;
     connectMySql.query(queryString, function(err, choice) {
@@ -145,7 +130,6 @@ function viewEmployees() {
     });
 }
                                                                                                       
-// Displays all employees by their department.
 function viewEmpByDept() {
     const queryString = `SELECT employee_table.id, employee_table.first_name, employee_table.last_name, role_table.title, department_table.dept_name AS department FROM employee_db.employee_table LEFT JOIN employee_db.role_table ON employee_table.role_id = role_table.id LEFT JOIN employee_db.department_table ON department_table.id = role_table.department_id ORDER BY role_table.title`;
     connectMySql.query(queryString, function(err, choice) {
@@ -155,7 +139,7 @@ function viewEmpByDept() {
     });
 }
 
-//View employees listed in alpahbetical order of their manager.
+
 function viewEmpByMgr() {
     const queryString = `SELECT employee_table.id, employee_table.first_name, employee_table.last_name, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee_db.employee_table LEFT JOIN employee_db.employee_table manager ON manager.id = employee_table.manager_id ORDER BY manager;`;
     connectMySql.query(queryString, function(err, choice) {
@@ -165,7 +149,7 @@ function viewEmpByMgr() {
     });
 }
 
-// Lists the role_table
+
 function viewRoles() {
     const queryString = "SELECT * FROM employee_db.role_table;";
     connectMySql.query(queryString, function(err, choice) {
@@ -185,7 +169,7 @@ function viewAllDept() {
     });
 }
 
-// Adds an employee **
+
 function addEmployee() {
     managerQuery()
         .then(result => {
@@ -252,7 +236,7 @@ function addEmployee() {
                                 );
                             });
                     } else {
-                        // roleNum = parseInt(choice.role_id.charAt(0));
+                        
                         console.log(roleNum);
                         const queryString = `INSERT INTO employee_db.employee_table (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`;
                         console.log(choice);
@@ -271,7 +255,7 @@ function addEmployee() {
         .catch(console.error);
 }
 
-// Adds a job to the role_table
+
 function addRole() {
     departmentQuery()
         .then(result => {
@@ -314,7 +298,7 @@ function addRole() {
         .catch(console.error);
 };
 
-//adds a new department
+
 function addDept() {
     inquirer
         .prompt([
@@ -334,7 +318,7 @@ function addDept() {
         });
 };
 
-// Updates an employees role
+
 function updateRole() {
     employeeQuery()
         .then(result => {
